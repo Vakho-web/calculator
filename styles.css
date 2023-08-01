@@ -1,3 +1,44 @@
-* {
+/* * {
     border: 1px red dashed;
+} */
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    margin: auto;
+}
+
+.other-row {
+    display: grid;
+}
+
+.other-row button {
+    width: 30px;
+    height: 30px;
+}
+
+.btn {
+    height: 50px;
+    width: 50px;
+    margin: 10px;
+}
+
+button.number {
+    border: 1px solid green;
+}
+
+button.operator {
+    border: 1px solid blue;
+}
+
+button.equal {
+    border: 1px solid yellow;
+}
+
+button.decimal {
+    border: 1px solid black;
 }
