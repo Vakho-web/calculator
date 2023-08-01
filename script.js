@@ -18,12 +18,7 @@ document.addEventListener("DOMContentLoaded", function(){
 		currentScreen.textContent = currentValue;
 	}))
 
-	operators.forEach((op) => op.addEventListener("click", function(e){
-		handleOperator(e.target.textContent);
-		previousScreen.textContent = previousValue + " " + operator;
-		currentScreen.textContent = currentValue;
-	}))
-
+	
 	clear.addEventListener("click", function(){
 		previousScreen.textContent = '';
 		previousValue = '';
@@ -31,11 +26,20 @@ document.addEventListener("DOMContentLoaded", function(){
 		currentValue = '';
 		operator = '';
 	})
-
+	
 	decimal.addEventListener("click", function() {
 		addDecimal();
 	})
+	
+	operators.forEach((op) => op.addEventListener("click", function(e){
+		handleOperator(e.target.textContent);
+		previousScreen.textContent = previousValue + " " + operator;
+		currentScreen.textContent = currentValue;
+	}))
 
+	/* If currentScreen and previousScreen are not empty
+	calculate() and return the result in previousScreen + operator */
+	
 	equal.addEventListener("click", function(){
 		if(currentValue != "" && previousValue != "") {
 			calculate()
@@ -49,17 +53,19 @@ document.addEventListener("DOMContentLoaded", function(){
 	})
 })
 
+function handleOperator(op) {
+	operator = op;
+	previousValue = currentValue;
+	currentValue = '';
+}
+
+
 function handleNumber(num) {
 	if(currentValue.length <= 5) {
 		currentValue += num;
 	}
 }
 
-function handleOperator(op) {
-	operator = op;
-	previousValue = currentValue;
-	currentValue = '';
-}
 
 function calculate(){
 	previousValue = Number(previousValue);
