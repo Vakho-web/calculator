@@ -21,7 +21,7 @@
     height: 30px;
 }
 
-.btn {
+div button {
     height: 50px;
     width: 50px;
     margin: 10px;
@@ -29,16 +29,51 @@
 
 button.number {
     border: 1px solid green;
+    border-radius: 10px;
 }
 
 button.operator {
     border: 1px solid blue;
+    border-radius: 10px;
 }
 
 button.equal {
     border: 1px solid yellow;
+    border-radius: 10px;
 }
 
 button.decimal {
     border: 1px solid black;
+    border-radius: 10px;
+}
+
+button.clear {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+#screen {
+    width: 200px;
+    height: 55px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.previous {
+    font-size: 15px;
+}
+
+.current {
+    font-size: 20px;
+}
+
+.first-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
