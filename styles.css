@@ -64,9 +64,9 @@ button.clear {
     align-items: flex-end;
 }
 
-.previous {
+/* .previous {
     font-size: 20px;
-}
+} */
 
 .current {
     font-size: 20px;

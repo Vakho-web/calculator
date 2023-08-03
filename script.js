@@ -40,6 +40,9 @@ function addZero() {
                 if (!(object.numOne[0] == 0) && (object.numOne.length < 10)) {
                         object["numOne"] += [0];
                         currentScreen.textContent = object.numOne;
+                } else if ((object.numOne[0] == 0) && object.numOne.includes(".")) {
+                        object["numOne"] += [0];
+                        currentScreen.textContent = object.numOne;
                 }
         }
         if (('operator' in object) && !('numTwo' in object)) {
@@ -47,6 +50,9 @@ function addZero() {
                 currentScreen.textContent = object.numTwo;
         } else if (('operator' in object)) {
                 if (!(object.numTwo[0] == 0) && (object.numTwo.length < 10)) {
+                        object["numTwo"] += [0];
+                        currentScreen.textContent = object.numTwo;
+                } else if ((object.numTwo[0] == 0) && object.numTwo.includes(".")) {
                         object["numTwo"] += [0];
                         currentScreen.textContent = object.numTwo;
                 }
@@ -70,17 +76,21 @@ function addNumber(e) {
         } else if (('numTwo' in object) && (object.numTwo.length < 10)) {
                 object["numTwo"] += [e];
                 currentScreen.textContent = object.numTwo;
+        } else if (('product' in object) && !('operator' in object) && !('numOne' in object) && !('numTwo' in object)) {
+                delete object.product;
+                object["numOne"] = [e];
+                currentScreen.textContent = object.numOne;
         }
 
 }
 
 function addOperator(e) {
         if(('product' in object) && ('operator' in object) && ('numTwo' in object)) {
-                operate(object.product, object,operator, object,numTwo);
+                operate(object.product, object.operator, object.numTwo);
                 currentScreen.textContent = object.product + e;
                 object["operator"] = e;
         } else if (('numOne' in object) && ('operator' in object) && ('numTwo' in object)) {
-                operate(object.numOne, object,operator, object,numTwo);
+                operate(object.numOne, object.operator, object.numTwo);
                 currentScreen.textContent = object.product + e;
                 object["operator"] = e;
         }
@@ -90,15 +100,59 @@ function addOperator(e) {
                 if('numOne' in object) {
                         object["operator"] = e;
                         currentScreen.textContent = object.numOne + e;
-                } else {
+                } else if ('product' in object) {
                         object["operator"] = e;
                         currentScreen.textContent = object.product + e;
                 }
         }
 }
 
+decimal.addEventListener("click", addDecimal)
 
+function addDecimal() {
+        if (!('numOne' in object) && !('product' in object)) {
+                object["numOne"] = "0.";
+                currentScreen.textContent = object.numOne;
+        } else if (('numOne' in object) && (!('operator' in object))) {
+                if (!(object.numOne.includes('.'))) {
+                        object["numOne"] += ["."];
+                        currentScreen.textContent = object.numOne;
+                }
+        } else if (('numOne' in object) && ('operator' in object) && !('numTwo' in object)) {
+                object["numTwo"] = "0.";
+                currentScreen.textContent = object.numTwo;
+        } else if (('numTwo' in object)) {
+                if (!(object.numTwo.includes('.'))) {
+                        object["numTwo"] += ["."];
+                        currentScreen.textContent = object.numTwo;
+                }
+        } else if (('product' in object) && ('operator' in object) && !('numTwo' in object)) {
+                object["numTwo"] = "0.";
+                currentScreen.textContent = object.numTwo;
+        }
+}
 
+clear.addEventListener("click", clearAll);
+
+function clearAll() {
+        delete object.numOne;
+        delete object.operator;
+        delete object.numTwo;
+        delete object.product;
+        currentScreen.textContent = "";
+}
+
+equal.addEventListener("click", equals);
+
+function equals() {
+        if (!('numTwo' in object)) {
+                return false
+        } else if (!('product' in object)) {
+                operate(object.numOne, object.operator, object.numTwo)
+        } else {
+                operate(object.product, object.operator, object.numTwo)
+        }
+}
 
 function operate(a, operator, b) {
         if (operator == "+") {
@@ -114,18 +168,38 @@ function operate(a, operator, b) {
             }
 }
 
-function addition(){
-
+function addition(a, b){
+        let result = Number(a) + Number(b);
+        currentScreen.textContent = result.toFixed(2).replace(/\.?0+$/, "");
+        object['product'] = result.toFixed(2).replace(/\.?0+$/, "");
+        delete object.numOne;
+        delete object.numTwo;
+        delete object.operator;
 }
 
-function subtraction(){
-
+function subtraction(a, b){
+        let result = Number(a) - Number(b);
+        currentScreen.textContent = result.toFixed(2).replace(/\.?0+$/, "");
+        object['product'] = result.toFixed(2).replace(/\.?0+$/, "");
+        delete object.numOne;
+        delete object.numTwo;
+        delete object.operator;
 }
 
-function multiplication(){
-
+function multiplication(a, b){
+        let result = Number(a) * Number(b);
+        currentScreen.textContent = result.toFixed(2).replace(/\.?0+$/, "");
+        object['product'] = result.toFixed(2).replace(/\.?0+$/, "");
+        delete object.numOne;
+        delete object.numTwo;
+        delete object.operator;
 }
 
-function division(){
-
+function division(a, b){
+        let result = Number(a) / Number(b);
+        currentScreen.textContent = result.toFixed(2).replace(/\.?0+$/, "");
+        object['product'] = result.toFixed(2).replace(/\.?0+$/, "");
+        delete object.numOne;
+        delete object.numTwo;
+        delete object.operator;
 }
