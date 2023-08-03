@@ -61,8 +61,10 @@ function addZero() {
 
 //add number as long as length is less than 10
 function addNumber(e) {
-        if(('product' in object) && !('operator')) {
-                return false
+        if(('product' in object) && !('operator' in object)) {
+                delete object.product;
+                object["numOne"] = [e];
+                currentScreen.textContent = object.numOne;
         } else if (!('operator' in object) && !('numOne' in object)) {
                 object["numOne"] = [e];
                 currentScreen.textContent = object.numOne;
@@ -76,10 +78,6 @@ function addNumber(e) {
         } else if (('numTwo' in object) && (object.numTwo.length < 10)) {
                 object["numTwo"] += [e];
                 currentScreen.textContent = object.numTwo;
-        } else if (('product' in object) && !('operator' in object) && !('numOne' in object) && !('numTwo' in object)) {
-                delete object.product;
-                object["numOne"] = [e];
-                currentScreen.textContent = object.numOne;
         }
 
 }
