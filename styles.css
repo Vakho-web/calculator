@@ -38,7 +38,7 @@ button.operator {
 }
 
 button.equal {
-    border: 1px solid yellow;
+    border: 1px solid black;
     border-radius: 10px;
 }
 
@@ -49,6 +49,11 @@ button.decimal {
 
 button.clear {
     border: 1px solid black;
+    border-radius: 10px;
+}
+
+button.zero {
+    border: 1px solid green;
     border-radius: 10px;
 }
 

@@ -159,10 +159,15 @@ function operate(a, operator, b) {
                 subtraction(a, b);
             } else if (operator == "*") {
                 multiplication(a, b);
-            } else if (operator == "/" && a == 0 || b == 0) {
-                current.textContent = "No thanks";
             } else if (operator == "/") {
-                division(a, b);
+                if (a == 0 || b == 0) {
+                        currentScreen.textContent = "No thanks";
+                        delete object.numOne;
+                        delete object.numTwo;
+                        delete object.operator;
+                } else {
+                        division(a, b);
+                }
             }
 }
 
