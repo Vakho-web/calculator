@@ -1,99 +1,135 @@
-	let previousValue = '';
-	let currentValue = '';
-	let operator = '';
-
 document.addEventListener("DOMContentLoaded", function(){
-	//store variables for all HTML elements
-	let numbers = document.querySelectorAll(".number");
-	let clear = document.querySelector(".clear");
-	let equal = document.querySelector(".equal");
-	let decimal = document.querySelector(".decimal");
-	let operators = document.querySelectorAll(".operator");
+        //store variables for all HTML elements
+        let numbers = document.querySelectorAll(".number");
+        let clear = document.querySelector(".clear");
+        let equal = document.querySelector(".equal");
+        let decimal = document.querySelector(".decimal");
+        let operators = document.querySelectorAll(".operator");
+        let zero = document.getElementById("zero")
+    
+        let previousScreen = document.querySelector(".previous");
+        let currentScreen = document.querySelector(".current");
+        
+        //empty object where the operands, operator and product will be stored
+        let object = {};
 
-	let previousScreen = document.querySelector(".previous");
-	let currentScreen = document.querySelector(".current");
+        //adding event listenre to number buttons to execute addNumber() function
+        for (let i = 0; i < numbers.length; i++) {
+                numbers[i].addEventListener('click', (e) => {
+                        addNumber(e.target.textContent);
+                })
+        }
 
-	numbers.forEach((number) => number.addEventListener("click", function(e) {
-		handleNumber(e.target.textContent);
-		currentScreen.textContent = currentValue;
-	}))
+        //Same for all operators
+        for (let i = 0; i < operators.length; i++) {
+                operators[i].addEventListener('click', (e) => {
+                        addOperator(e.target.textContent);
+                })
+        }
 
-	
-	clear.addEventListener("click", function(){
-		previousScreen.textContent = '';
-		previousValue = '';
-		currentScreen.textContent = '';
-		currentValue = '';
-		operator = '';
-	})
-	
-	decimal.addEventListener("click", function() {
-		addDecimal();
-	})
-	
-	operators.forEach((op) => op.addEventListener("click", function(e){
-		handleOperator(e.target.textContent);
-		previousScreen.textContent = previousValue + " " + operator;
-		currentScreen.textContent = currentValue;
-	}))
+        //zero is a bit different as it does not allow repetition by itself, unless it's behind a decimal.
+        zero.addEventListener('click', addZero);
 
-	/* If currentScreen and previousScreen are not empty
-	calculate() and return the result in previousScreen + operator */
-	
-	equal.addEventListener("click", function(){
-		if(currentValue != "" && previousValue != "") {
-			calculate()
-			previousScreen.textContent = '';
-			if(previousValue.length <= 10) {
-				currentScreen.textContent = previousValue;
-			} else {
-				currentScreen.textContent = previousValue.slice(0,10) + "...";
-			}
-		}
-	})
+        //if there is 0 don't add 0 / if there is another number add 0
+        function addZero() {
+                if(('product' in object) && !('operator')) {
+                        return false
+                } else if (!('operator' in object) && !('numOne' in object)) {
+                        object['numOne'] = [0];
+                        currentScreen.textContent = object.numOne;
+                } else if (!('operator' in object)) {
+                        if (!(object['numOne'] == 0) && (object.numOne.length < 10)) {
+                                object['numOne'] += [0];
+                                currentScreen.textContent = object.numOne;
+                        }
+                }
+                if (!('operator' in object) && !('numTwo' in object)) {
+                        object['numTwo'] = [0];
+                        currentScreen.textContent = object.numTwo;
+                } else if (!('operator' in object)) {
+                        if (!(object['numTwo'] == 0) && (object.numTwo.length < 10)) {
+                                object['numTwo'] += [0];
+                                currentScreen.textContent = object.numTwo;
+                        }
+                }
+        }
+        
+        //add number as long as length is less than 10
+        function addNumber(e) {
+                if(('product' in object) && !('operator')) {
+                        return false
+                } else if (!('operator' in object) && !('numOne' in object)) {
+                        object['numOne'] += [e];
+                        currentScreen.textContent = object.numOne;
+                } else if (!('operator' in object) && object.numOne.length < 10) {
+                        object['numOne'] += [e];
+                        currentScreen.textContent = object.numOne;
+                } 
+                
+                if (!('operator' in object) && !('numTwo' in object)) {
+                        object['numTwo'] += [e];
+                        currentScreen.textContent = object.numTwo;
+                } else if (!('operator' in object) && object.numTwo.length < 10) {
+                        object['numTwo'] += [e];
+                        currentScreen.textContent = object.numTwo;
+                }
+
+        }
+        
+        function addOperator(e) {
+                if(('product' in object) && ('operator' in object) && ('numTwo' in object)) {
+                        operate(object.product, object,operator, object,numTwo);
+                        currentScreen.textContent = object.product + e;
+                        object['operand'] = e;
+                } else if (('numOne' in object) && ('operator' in object) && ('numTwo' in object)) {
+                        operate(object.numOne, object,operator, object,numTwo);
+                        currentScreen.textContent = object.product + e;
+                        object['operand'] = e;
+                }
+                if (!('product' in object) && !('numOne' in object)) {
+                        return false
+                } else {
+                        if('numOne' in object) {
+                                object['operand'] = e;
+                                currentScreen.textContent = object.numOne + e;
+                        } else {
+                                object['operand'] = e;
+                                currentScreen.textContent = object.product + e;
+                        }
+                }
+        }
+
+
+
+
+        function operate(a, operator, b) {
+                if (operator == "+") {
+                        addition(a, b);
+                    } else if (operator == "-") {
+                        subtraction(a, b);
+                    } else if (operator == "*") {
+                        multiplication(a, b);
+                    } else if (operator == "/" && a == 0 || b == 0) {
+                        current.textContent = "No thanks";
+                    } else if (operator == "/") {
+                        division(a, b);
+                    }
+        }
+
+        function addition(){
+
+        }
+
+        function subtraction(){
+
+        }
+
+        function multiplication(){
+
+        }
+
+        function division(){
+
+        }
 })
-
-function handleOperator(op) {
-	operator = op;
-	previousValue = currentValue;
-	currentValue = '';
-}
-
-
-function handleNumber(num) {
-	if(currentValue.length <= 5) {
-		currentValue += num;
-	}
-}
-
-
-function calculate(){
-	previousValue = Number(previousValue);
-	currentValue = Number(currentValue);
-
-	if(operator === "+") {
-		previousValue += currentValue;
-	} else if(operator === "-") {
-		previousValue -= currentValue;
-	} else if(operator === "*") {
-		previousValue *= currentValue;
-	} else if(operator === "/") {
-		previousValue /= currentValue
-	}
-
-	previousValue = roundNumber(previousValue);
-	previousValue = previousValue.toString();
-	currentValue = previousValue.toString();
-}
-
-function roundNumber(num) {
-	return Math.round(num * 1000) / 1000;
-}
-
-function addDecimal() {
-	if(!currentValue.includes(".")) {
-		currentValue += "."
-	}
-}
-
 
